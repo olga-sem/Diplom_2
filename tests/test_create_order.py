@@ -33,11 +33,7 @@ class TestCreateOrder:
         auth_response = auth[1]
         access_token = auth_response["accessToken"]
         order = CreateOrder().create_order_with_wrong_hash(access_token)
-        assert order[0] == 500, f"Expected status 500, but got {order[0]} with response: {order[1]}"
-        if 'message' in order[1]:
-            assert WRONG_HASH in order[1]['message'], "Wrong hash message not found"
-        else:
-            print("Error response does not contain a message.")
+        assert order[0] == 500 and WRONG_HASH in order[1]
 
 
     @allure.title('Тест на создание заказа неавторизованным пользователем')

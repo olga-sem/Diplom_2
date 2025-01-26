@@ -28,12 +28,14 @@ class CreateOrder:
         headers = {"Authorization": access_token}
         ingredients = {"ingredients": ["61c0c5trytyuiid"]}
         response = requests.post(f'{urls.BASE_URL}{urls.ORDER_URL}', headers=headers, json=ingredients)
-        print(f"Status Code: {response.status_code}")
-        try:
-            response_json = response.json()
-        except ValueError:
-            print(f"Response Content: {response.text}")
+        if response.status_code == 500:
+            try:
+                response_json = response.json()
+            except ValueError:
+                response_json = response.text
+        else:
             response_json = {}
+
         return [response.status_code, response_json]
 
     @allure.step('Метод для создания заказа неавторизованным пользователем')
